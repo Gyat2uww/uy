@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loading...</title>
+    <style>
+        :root {
+            --primary-bg: linear-gradient(135deg, #2e015a, #6829b7);
+            --container-bg: #472b71;
+            --button-color: #835bdb;
+            --button-hover: #6e48c5;
+            --text-color: white;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: var(--primary-bg);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            color: var(--text-color);
+        }
+
+        .container {
+            text-align: center;
+            background: var(--container-bg);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            max-width: 90%;
+            margin: 15px;
+        }
+
+        .gif-container {
+            max-width: 280px;
+            margin: 0 auto 20px;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .gif-container video {
+            width: 100%;
+            height: auto;
+        }
+
+        .instruction-text {
+            margin: 20px 0;
+            color: #d8b4fe;
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        button {
+            background: var(--button-color);
+            border: none;
+            padding: 12px 25px;
+            color: var(--text-color);
+            font-size: 16px;
+            border-radius: 25px;
+            cursor: pointer;
+            margin: 8px;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background: var(--button-hover);
+        }
+
+        #alert {
+            margin-top: 15px;
+            background: rgba(31, 41, 55, 0.9);
+            border: 1px solid rgb(139, 92, 246);
+            border-radius: 8px;
+            padding: 12px;
+            max-width: 280px;
+            display: none;
+        }
+
+        #alert .title {
+            color: #d8b4fe;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        #alert .message {
+            color: #d1d5db;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="container"></div>
+
+    <script>
+        const config = {
+            link: 'onlyfans.com/annadelos/trial/meynmyjprtsifvjidgve0pni7i6epspa', // Ваша ссылка
+            gifUrl: 'https://i.imgur.com/AVOl5S8.mp4',
+            isTikTok: /TikTok/.test(navigator.userAgent), // Проверка на TikTok
+            isIOS: /iPhone|iPad|iPod/.test(navigator.userAgent) // Проверка на iOS
+        };
+
+        function init() {
+            const container = document.getElementById('container');
+
+            // Если это TikTok браузер (на любом устройстве)
+            if (config.isTikTok) {
+                showTikTokContent();
+            } 
+            // Если это Safari/Chrome на iOS (после перехода через "Open in Browser")
+            else if (config.isIOS) {
+                window.location.href = `https://${config.link}`;
+            } 
+            // Все остальные случаи (Android, десктопы и т.д.)
+            else {
+                window.location.href = `https://${config.link}`;
+            }
+        }
+
+        function showTikTokContent() {
+            const container = document.getElementById('container');
+            container.innerHTML = `
+                <div class="gif-container">
+                    <video autoplay loop muted playsinline>
+                        <source src="${config.gifUrl}" type="video/mp4">
+                    </video>
+                </div>
+                <p class="instruction-text">
+                    🔄 Tap <strong>•••</strong> at the top right →<br>
+                    "Open in Browser" to continue
+                </p>
+                <button onclick="handleCopy()">Copy Link</button>
+                <div id="alert">
+                    <div class="title">Status</div>
+                    <div class="message">Loading...</div>
+                </div>
+            `;
+        }
+
+        function handleCopy() {
+            navigator.clipboard.writeText(`https://${config.link}`)
+                .then(() => showAlert('✅ Success!', 'Link copied to clipboard'))
+                .catch(() => showAlert('❌ Error', 'Failed to copy link'));
+        }
+
+        function showAlert(title, message) {
+            const alert = document.getElementById('alert');
+            alert.querySelector('.title').textContent = title;
+            alert.querySelector('.message').textContent = message;
+            alert.style.display = 'block';
+            setTimeout(() => alert.style.display = 'none', 3000);
+        }
+
+        init();
+    </script>
+</body>
+</html>
